@@ -51,7 +51,6 @@ export default function MapInner({ userLocation, places }: MapInnerProps) {
 
   useEffect(() => {
     if (!containerRef.current || typeof window === "undefined") return;
-    import("leaflet/dist/leaflet.css");
 
     const center = userLocation ?? { lat: 40.7484, lng: -73.9857 };
     const map = L.map(containerRef.current, {

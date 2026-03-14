@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import DashboardSidebar from "@/app/dashboard/DashboardSidebar";

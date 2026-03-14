@@ -34,6 +34,12 @@ export default function Header() {
           (user ? (
             <>
               <Link
+                href="/dashboard"
+                className="text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Link
                 href="/account"
                 className="text-sm text-zinc-400 hover:text-white transition-colors"
               >
@@ -50,7 +56,7 @@ export default function Header() {
                 href="/account"
                 className="text-sm font-medium px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
               >
-                {user.name || user.email}
+                {user.username || user.name || user.email}
               </Link>
             </>
           ) : (

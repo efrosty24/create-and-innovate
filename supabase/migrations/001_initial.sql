@@ -59,7 +59,7 @@ create policy "Users can delete own products"
   on public.user_products for delete
   using (auth.uid() = user_id);
 
--- Storage bucket for avatars (create in Dashboard or run via API)
--- insert into storage.buckets (id, name, public) values ('avatars', 'avatars', true);
--- create policy "Avatar uploads" on storage.objects for insert with check (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
--- create policy "Avatar public read" on storage.objects for select using (bucket_id = 'avatars');
+-- Storage: create bucket "avatars" in Supabase Dashboard (Storage → New bucket → "avatars", Public).
+-- Then in Storage → Policies for "avatars":
+--   - "Users can upload own avatar": INSERT with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text)
+--   - "Avatars are public": SELECT for all (or use bucket public URL)

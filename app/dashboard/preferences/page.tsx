@@ -111,18 +111,19 @@ export default function PreferencesPage() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] transition-colors"
+              className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] transition-colors"
             >
               {avatarPreview ? (
-                <Image
-                  src={avatarPreview}
-                  alt="Profile"
-                  fill
-                  className="object-cover"
-                  unoptimized={avatarPreview.startsWith("blob:")}
-                  width={96}
-                  height={96}
-                />
+                <span className="relative block h-full w-full">
+                  <Image
+                    src={avatarPreview}
+                    alt="Profile"
+                    fill
+                    className="object-cover"
+                    unoptimized={avatarPreview.startsWith("blob:")}
+                    sizes="96px"
+                  />
+                </span>
               ) : (
                 <span className="flex h-full w-full items-center justify-center text-3xl text-zinc-500">
                   👤
