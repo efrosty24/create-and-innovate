@@ -54,7 +54,7 @@ export default function AccountPage() {
           </p>
 
           {/* Profile */}
-          <section className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
+          <section className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 sm:mt-10 sm:rounded-2xl sm:p-6">
             <h2 className="text-lg font-medium text-white">Profile</h2>
             <dl className="mt-4 space-y-3">
               <div>
@@ -73,13 +73,13 @@ export default function AccountPage() {
           </section>
 
           {/* Linked devices */}
-          <section className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
+          <section className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 sm:mt-10 sm:rounded-2xl sm:p-6">
             <h2 className="text-lg font-medium text-white">Linked Prism devices</h2>
             <p className="mt-2 text-sm text-zinc-400">
               Devices linked to this account. Use the 4-digit Short-ID from your device to add one.
             </p>
 
-            <form onSubmit={handleLinkDevice} className="mt-6 flex gap-3">
+            <form onSubmit={handleLinkDevice} className="mt-6 flex flex-wrap gap-3">
               <input
                 type="text"
                 inputMode="numeric"
@@ -87,11 +87,11 @@ export default function AccountPage() {
                 value={shortId}
                 onChange={(e) => setShortId(e.target.value.replace(/\D/g, "").slice(0, 4))}
                 placeholder="0000"
-                className="w-24 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                className="w-20 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] sm:w-24"
               />
               <button
                 type="submit"
-                className="rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
+                className="min-h-[48px] rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
               >
                 Link device
               </button>

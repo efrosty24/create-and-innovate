@@ -27,9 +27,9 @@ export default function SafeSpacePage() {
         <p className="mt-4 text-sm text-amber-400">Could not load some data. Showing map with demo places.</p>
       )}
 
-      <div className="mt-8">
+      <div className="mt-6 sm:mt-8">
         {loading ? (
-          <div className="h-[400px] rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-zinc-500">
+          <div className="h-[280px] sm:h-[360px] md:h-[400px] rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-zinc-500">
             Loading map…
           </div>
         ) : (
@@ -50,8 +50,8 @@ export default function SafeSpacePage() {
         </div>
       )}
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
-        <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <div className="mt-6 grid gap-6 sm:mt-8 sm:gap-8 sm:grid-cols-2">
+        <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Establishments</h2>
           <p className="mt-1 text-sm text-zinc-500">Queer-friendly venues. Click to view or add feedback.</p>
           {locations.length === 0 ? (
@@ -77,7 +77,7 @@ export default function SafeSpacePage() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Safe areas</h2>
           <p className="mt-1 text-sm text-zinc-500">Cities, towns, streets. Click to view or add feedback.</p>
           {areas.length === 0 ? (
@@ -104,7 +104,7 @@ export default function SafeSpacePage() {
         </section>
       </div>
 
-      <section className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+      <section className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 sm:mt-8 sm:rounded-2xl sm:p-6">
         <h2 className="text-lg font-medium text-white">Legend</h2>
         <ul className="mt-4 space-y-2 text-sm text-zinc-400">
           <li className="flex items-center gap-3">

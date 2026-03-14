@@ -99,8 +99,8 @@ export default function PreferencesPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-semibold text-white">Preferences</h1>
+    <div className="mx-auto max-w-2xl min-w-0">
+      <h1 className="text-xl font-semibold text-white sm:text-2xl">Preferences</h1>
       <p className="mt-2 text-zinc-400">
         Edit your profile picture, name, email, username, and password.
       </p>
@@ -117,7 +117,7 @@ export default function PreferencesPage() {
 
       {/* Profile: avatar + username */}
       <form onSubmit={handleSubmitProfile} className="mt-8 space-y-6">
-        <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Profile</h2>
 
           <div className="mt-6 flex flex-wrap items-start gap-6">
@@ -180,7 +180,7 @@ export default function PreferencesPage() {
                   autoComplete="given-name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] sm:max-w-xs"
                   placeholder="First name"
                 />
               </div>
@@ -194,7 +194,7 @@ export default function PreferencesPage() {
                   autoComplete="family-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] sm:max-w-xs"
                   placeholder="Last name"
                 />
               </div>
@@ -208,7 +208,7 @@ export default function PreferencesPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] sm:max-w-xs"
                   placeholder="you@example.com"
                 />
               </div>
@@ -221,7 +221,7 @@ export default function PreferencesPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] sm:max-w-xs"
                   placeholder="Display name"
                 />
               </div>
@@ -237,8 +237,8 @@ export default function PreferencesPage() {
       </form>
 
       {/* Password */}
-      <form onSubmit={handleSubmitPassword} className="mt-8">
-        <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <form onSubmit={handleSubmitPassword} className="mt-6 sm:mt-8">
+        <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Change password</h2>
           <div className="mt-4 space-y-4">
             <PasswordInput
@@ -248,7 +248,7 @@ export default function PreferencesPage() {
               onChange={(e) => setPassword(e.target.value)}
               minLength={6}
               placeholder="At least 6 characters"
-              className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+              className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 sm:max-w-xs text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
             />
             <PasswordInput
               id="passwordConfirm"
@@ -256,7 +256,7 @@ export default function PreferencesPage() {
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
               placeholder="Repeat password"
-              className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+              className="mt-2 w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 sm:max-w-xs text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
             />
           </div>
           <button

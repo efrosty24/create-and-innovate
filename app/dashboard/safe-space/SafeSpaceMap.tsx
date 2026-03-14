@@ -57,7 +57,7 @@ export default function SafeSpaceMap({ places, onLocationError }: Props) {
           Location: {locationError} Showing default view; enable location for your position.
         </p>
       )}
-      <div className="h-[400px] rounded-2xl border border-white/10 overflow-hidden">
+      <div className="h-[280px] sm:h-[360px] md:h-[400px] rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
         <MapComponent
           userLocation={userLocation}
           places={places}

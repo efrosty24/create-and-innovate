@@ -146,6 +146,7 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
+            </div>
           </div>
         </section>
 

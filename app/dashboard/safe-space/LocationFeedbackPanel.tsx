@@ -34,7 +34,7 @@ export default function LocationFeedbackPanel({ safeLocation, safeArea, onClose 
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+    <div className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium text-white">Comments & feedback — {name}</h3>
         <button
