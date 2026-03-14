@@ -59,22 +59,20 @@ export default function SafeSpacePage() {
       )}
 
       {showFeedback && (
-        <div className="mt-6">
-          <LocationFeedbackPanel
-            safeLocation={selectedLocation}
-            safeArea={selectedArea}
-            onClose={() => {
-              setSelectedLocation(null);
-              setSelectedArea(null);
-            }}
-          />
-        </div>
+        <LocationFeedbackPanel
+          safeLocation={selectedLocation}
+          safeArea={selectedArea}
+          onClose={() => {
+            setSelectedLocation(null);
+            setSelectedArea(null);
+          }}
+        />
       )}
 
-      {/* Layout: on md+ left = lists, right = map + legend */}
+      {/* Layout: on md+ left = scrollable lists, right = sticky map + legend */}
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-[1fr_1fr] md:gap-8 lg:grid-cols-[minmax(0,380px)_1fr]">
-        {/* Left column: Establishments and Safe areas */}
-        <div className="flex flex-col gap-6 min-w-0">
+        {/* Left column: scrollable Establishments and Safe areas */}
+        <div className="flex flex-col gap-6 min-w-0 overflow-y-auto max-h-[calc(100vh-10rem)] md:max-h-[calc(100vh-8rem)]">
           <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
             <h2 className="text-lg font-medium text-white">Establishments</h2>
             <p className="mt-1 text-sm text-zinc-500">Queer-friendly venues. Click to view or add feedback.</p>
@@ -156,16 +154,16 @@ export default function SafeSpacePage() {
           </section>
         </div>
 
-        {/* Right column: Map + Legend */}
-        <div className="flex flex-col gap-4 min-w-0 order-first md:order-none">
+        {/* Right column: sticky Map + Legend (does not scroll with page) */}
+        <div className="flex flex-col gap-4 min-w-0 order-first md:order-none md:sticky md:top-4 md:self-start">
           <div className="min-w-0">
             {loading ? (
-              <SkeletonRect className="h-[280px] w-full sm:h-[360px] md:h-[400px] rounded-xl sm:rounded-2xl border border-white/10" />
+              <SkeletonRect className="h-[60vh] min-h-[280px] w-full rounded-xl sm:rounded-2xl border border-white/10" />
             ) : (
               <SafeSpaceMap places={places} />
             )}
           </div>
-          <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
+          <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6 shrink-0">
             <h2 className="text-lg font-medium text-white">Legend</h2>
             <ul className="mt-4 space-y-2 text-sm text-zinc-400">
               <li className="flex items-center gap-3">

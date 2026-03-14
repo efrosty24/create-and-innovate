@@ -28,7 +28,7 @@ export default function DashboardSidebar({ open, onClose, collapsed, onCollapsed
         />
       )}
       <aside
-        className={`fixed left-0 top-14 z-[1000] h-[calc(100vh-3.5rem)] border-r border-white/10 bg-[#0c0c0c] transition-[width,transform] duration-200 lg:static lg:z-auto lg:translate-x-0 flex flex-col ${
+        className={`fixed left-0 top-14 z-[1000] h-[calc(100vh-3.5rem)] border-r border-white/10 bg-[#0c0c0c] transition-[width,transform] duration-200 lg:sticky lg:top-14 lg:z-auto lg:translate-x-0 lg:self-start lg:h-[calc(100vh-3.5rem)] flex flex-col ${
           open ? "translate-x-0" : "-translate-x-full"
         } w-64 ${collapsed ? "lg:w-[4.25rem]" : ""}`}
       >

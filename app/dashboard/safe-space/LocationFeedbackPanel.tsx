@@ -36,65 +36,74 @@ export default function LocationFeedbackPanel({ safeLocation, safeArea, onClose 
   }
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium text-white">Comments & feedback — {name}</h3>
-        <button
-          type="button"
-          onClick={onClose}
-          className="text-zinc-400 hover:text-white transition-colors p-1"
-          aria-label="Close"
-        >
-          <FiX className="h-5 w-5" />
-        </button>
-      </div>
-
-      {loading ? (
-        <div className="mt-4 space-y-3 max-h-60 overflow-hidden">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-lg border border-white/5 bg-black/20 p-3 space-y-2">
-              <Skeleton className="h-4 w-full rounded" />
-              <Skeleton className="h-3 w-24 rounded" />
-            </div>
-          ))}
-        </div>
-      ) : feedback.length === 0 ? (
-        <p className="mt-4 text-sm text-zinc-500">No comments yet. Be the first to share feedback.</p>
-      ) : (
-        <ul className="mt-4 space-y-3 max-h-60 overflow-y-auto">
-          {feedback.map((f) => (
-            <li key={f.id} className="rounded-lg border border-white/5 bg-black/20 p-3">
-              <p className="text-sm text-white">{f.content}</p>
-              <p className="mt-1 text-xs text-zinc-500">
-                {feedbackAuthorName(f)} · {new Date(f.created_at).toLocaleDateString()}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {user ? (
-        <form onSubmit={handleSubmit} className="mt-4">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Share a comment or feedback…"
-            rows={2}
-            className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] resize-none"
-          />
-          <div className="mt-2 flex justify-end">
+    <>
+      <div
+        className="fixed inset-0 z-[1100] bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+        aria-hidden
+      />
+      <div className="fixed left-1/2 top-1/2 z-[1101] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-hidden flex flex-col rounded-xl border border-white/10 bg-[#0c0c0c] shadow-2xl sm:rounded-2xl">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 min-h-0">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium text-white">Comments & feedback — {name}</h3>
             <button
-              type="submit"
-              disabled={submitting || !content.trim()}
-              className="rounded-full bg-[#ff6b35] px-4 py-2 text-sm font-medium text-white hover:bg-[#e85a2a] disabled:opacity-50 transition-all"
+              type="button"
+              onClick={onClose}
+              className="text-zinc-400 hover:text-white transition-colors p-1 rounded"
+              aria-label="Close"
             >
-              {submitting ? "Posting…" : "Post"}
+              <FiX className="h-5 w-5" />
             </button>
           </div>
-        </form>
-      ) : (
-        <p className="mt-4 text-sm text-zinc-500">Sign in to post a comment.</p>
-      )}
-    </div>
+
+          {loading ? (
+            <div className="mt-4 space-y-3 max-h-60 overflow-hidden">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-lg border border-white/5 bg-black/20 p-3 space-y-2">
+                  <Skeleton className="h-4 w-full rounded" />
+                  <Skeleton className="h-3 w-24 rounded" />
+                </div>
+              ))}
+            </div>
+          ) : feedback.length === 0 ? (
+            <p className="mt-4 text-sm text-zinc-500">No comments yet. Be the first to share feedback.</p>
+          ) : (
+            <ul className="mt-4 space-y-3 max-h-60 overflow-y-auto">
+              {feedback.map((f) => (
+                <li key={f.id} className="rounded-lg border border-white/5 bg-black/20 p-3">
+                  <p className="text-sm text-white">{f.content}</p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    {feedbackAuthorName(f)} · {new Date(f.created_at).toLocaleDateString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {user ? (
+            <form onSubmit={handleSubmit} className="mt-4">
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Share a comment or feedback…"
+                rows={2}
+                className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] resize-none"
+              />
+              <div className="mt-2 flex justify-end">
+                <button
+                  type="submit"
+                  disabled={submitting || !content.trim()}
+                  className="rounded-full bg-[#ff6b35] px-4 py-2 text-sm font-medium text-white hover:bg-[#e85a2a] disabled:opacity-50 transition-all"
+                >
+                  {submitting ? "Posting…" : "Post"}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <p className="mt-4 text-sm text-zinc-500">Sign in to post a comment.</p>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
