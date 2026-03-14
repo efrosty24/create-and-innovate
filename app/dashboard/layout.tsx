@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
@@ -15,6 +15,18 @@ import {
   SkeletonRect,
 } from "@/app/components/Skeleton";
 
+const SIDEBAR_COLLAPSED_KEY = "prism_sidebar_collapsed";
+
+function getStoredSidebarCollapsed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const stored = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+    return stored === "true";
+  } catch {
+    return false;
+  }
+}
+
 export default function DashboardLayout({
   children,
 }: {
@@ -24,6 +36,19 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    setSidebarCollapsed(getStoredSidebarCollapsed());
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(sidebarCollapsed));
+    } catch {
+      // ignore
+    }
+  }, [sidebarCollapsed]);
 
   if (!isLoading && !user) {
     router.replace("/sign-in");
@@ -37,6 +62,8 @@ export default function DashboardLayout({
         <DashboardSidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
+          collapsed={sidebarCollapsed}
+          onCollapsedChange={setSidebarCollapsed}
           currentPath={pathname}
         />
         <div className="flex-1 flex flex-col min-w-0">
@@ -48,7 +75,7 @@ export default function DashboardLayout({
           >
             {sidebarOpen ? <FiChevronLeft className="h-5 w-5" /> : <FiChevronRight className="h-5 w-5" />}
           </button>
-          <main className="flex-1 p-4 sm:p-6 lg:pl-8">
+          <main className="flex-1 p-4 sm:p-6 lg:pl-6">
             {isLoading ? (
               <div className="mx-auto max-w-4xl min-w-0 space-y-8">
                 <div className="space-y-2">
