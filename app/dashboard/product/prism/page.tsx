@@ -5,6 +5,10 @@ import PrismWaitlist from "./PrismWaitlist";
 
 const GALLERY_IMAGES = [
   {
+    src: "/design.png",
+    alt: "Prism microcontroller design",
+  },
+  {
     src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
     alt: "Prism device - wearable safety beacon",
   },

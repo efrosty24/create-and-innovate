@@ -22,7 +22,17 @@ export default function Home() {
             Node-to-node messaging over LoRa. Discreet alerts. Safe proximity
             beacon. No names, no tracking—just your community.
           </p>
-          <div className="mt-10 w-full max-w-2xl sm:mt-16">
+          <div className="mt-10 w-full max-w-2xl sm:mt-16 space-y-6">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-900 sm:rounded-2xl">
+              <Image
+                src="/design.png"
+                alt="Prism microcontroller design"
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 672px"
+                priority
+              />
+            </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-900 sm:rounded-2xl">
               <Image
                 src={PRODUCT_IMAGE}
@@ -30,7 +40,6 @@ export default function Home() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 672px"
-                priority
               />
             </div>
           </div>

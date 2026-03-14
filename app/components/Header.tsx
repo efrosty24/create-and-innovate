@@ -12,7 +12,10 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex h-14 min-h-[56px] items-center justify-between px-4 sm:px-6 bg-[#0c0c0c]/95 backdrop-blur-xl border-b border-white/5 safe-area-inset-top">
-      <Link href="/" className="text-base sm:text-lg font-semibold tracking-tight text-white shrink-0">
+      <Link
+        href={!isLoading && user ? "/dashboard" : "/"}
+        className="text-base sm:text-lg font-semibold tracking-tight text-white shrink-0"
+      >
         Prism
       </Link>
 
