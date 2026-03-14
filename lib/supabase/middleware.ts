@@ -40,5 +40,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(signIn);
   }
 
+  // Signed-in users hitting the landing page go straight to the dashboard
+  if (user && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   return response;
 }
