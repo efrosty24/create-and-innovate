@@ -35,8 +35,11 @@ export default function ForgotPasswordPage() {
             Enter your email and we&apos;ll send you a link to reset your password.
           </p>
           {status === "success" ? (
-            <div className="mt-8 rounded-lg bg-green-500/20 p-4 text-green-400 text-sm">
-              {message}
+            <div className="mt-8 space-y-3 rounded-lg bg-green-500/20 p-4 text-green-400 text-sm">
+              <p>{message}</p>
+              <p className="text-zinc-400">
+                If the link doesn&apos;t work when you click it, copy the full link from the email and paste it into your browser&apos;s address bar.
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -69,7 +72,10 @@ export default function ForgotPasswordPage() {
             </form>
           )}
           <p className="mt-6 text-center text-sm text-zinc-400">
-            <Link href="/sign-in" className="font-medium text-[#ff6b35] hover:underline">
+            <Link
+              href="/sign-in"
+              className="inline-block py-2 font-medium text-[#ff6b35] hover:underline cursor-pointer focus:outline-none focus:underline"
+            >
               Back to sign in
             </Link>
           </p>

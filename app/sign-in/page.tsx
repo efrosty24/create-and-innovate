@@ -17,11 +17,13 @@ export default function SignInPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const ok = await signIn(email, password);
-    if (ok) {
+    const result = await signIn(email, password);
+    if (result.ok) {
       const next = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null;
       router.push(next && next.startsWith("/") ? next : "/dashboard");
-    } else setError("Invalid email or password.");
+    } else {
+      setError(result.error ?? "Invalid email or password.");
+    }
   }
 
   return (
@@ -32,6 +34,9 @@ export default function SignInPage() {
           <h1 className="text-2xl font-semibold text-white">Sign in</h1>
           <p className="mt-2 text-sm text-zinc-400">
             Use your Prism account to manage devices.
+          </p>
+          <p className="mt-2 text-xs text-zinc-500">
+            New user? Check your email to confirm your account before signing in.
           </p>
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
             <div>

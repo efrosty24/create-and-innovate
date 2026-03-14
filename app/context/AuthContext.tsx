@@ -31,7 +31,7 @@ type AuthContextType = {
   user: User | null;
   linkedDevices: LinkedDevice[];
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<boolean>;
+  signIn: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   signUp: (
     email: string,
     password: string,
@@ -237,9 +237,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(
     async (email: string, password: string) => {
+      const trimmedEmail = email.trim().toLowerCase();
+      const trimmedPassword = password.trim();
       if (supabase) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        return !error;
+        const { error } = await supabase.auth.signInWithPassword({
+          email: trimmedEmail,
+          password: trimmedPassword,
+        });
+        if (error) {
+          const message =
+            error.message?.toLowerCase().includes("email not confirmed")
+              ? "Confirm your email first. Check your inbox for the confirmation link."
+              : error.code === "invalid_credentials"
+                ? undefined
+                : error.message;
+          return { ok: false, error: message };
+        }
+        return { ok: true };
       }
       try {
         const raw = localStorage.getItem(USERS_KEY);
@@ -247,9 +261,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ? JSON.parse(raw)
           : [];
         const found = users.find(
-          (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+          (u) => u.email.toLowerCase() === trimmedEmail && u.password === trimmedPassword
         );
-        if (!found) return false;
+        if (!found) return { ok: false };
         const userData: User = {
           id: found.id,
           email: found.email,
@@ -262,9 +276,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
         setUser(userData);
         setLinkedDevices(loadLinkedDevicesFallback());
-        return true;
+        return { ok: true };
       } catch {
-        return false;
+        return { ok: false };
       }
     },
     [supabase]
@@ -418,7 +432,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetPasswordForEmail = useCallback(
     async (email: string, redirectTo?: string): Promise<{ ok: boolean; message?: string }> => {
       if (!supabase) return { ok: false, message: "Auth is not configured." };
-      const url = redirectTo ?? (typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined);
+      const base = typeof window !== "undefined" ? window.location.origin : "";
+      const url =
+        redirectTo ??
+        (base ? `${base}/auth/callback?next=${encodeURIComponent("/reset-password")}` : undefined);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: url,
       });

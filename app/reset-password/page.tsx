@@ -1,11 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
 import { useAuth } from "@/app/context/AuthContext";
 import { createClient } from "@/lib/supabase/client";
 import { PasswordInput } from "@/app/components/PasswordInput";
+
+function getTokensFromUrl(): { access_token: string; refresh_token: string; type: string } | null {
+  if (typeof window === "undefined") return null;
+  const hash = window.location.hash.replace(/^#/, "");
+  const query = window.location.search.replace(/^\?/, "");
+  const hashParams = new URLSearchParams(hash);
+  const queryParams = new URLSearchParams(query);
+  const get = (name: string) => hashParams.get(name) ?? queryParams.get(name);
+  const accessToken = get("access_token");
+  const type = get("type");
+  if (type === "recovery" && accessToken) {
+    return {
+      access_token: accessToken,
+      refresh_token: get("refresh_token") ?? "",
+      type,
+    };
+  }
+  return null;
+}
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -17,16 +37,18 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    if (!supabase) return;
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
-    const params = new URLSearchParams(hash.replace(/^#/, ""));
-    const accessToken = params.get("access_token");
-    const type = params.get("type");
-    if (type === "recovery" && accessToken) {
+    if (!supabase) {
+      setHandled(true);
+      return;
+    }
+
+    const tokens = getTokensFromUrl();
+
+    if (tokens) {
       supabase.auth
         .setSession({
-          access_token: accessToken,
-          refresh_token: params.get("refresh_token") ?? "",
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token,
         })
         .then(() => {
           setHandled(true);
@@ -35,9 +57,16 @@ export default function ResetPasswordPage() {
           }
         })
         .catch(() => setHandled(true));
-    } else {
-      setHandled(true);
+      return;
     }
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setHandled(true);
+      } else {
+        setHandled(true);
+      }
+    });
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -102,16 +131,19 @@ export default function ResetPasswordPage() {
               )}
               <button
                 type="submit"
-                className="w-full rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] transition-colors"
+                className="w-full rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] transition-colors cursor-pointer"
               >
                 Update password
               </button>
             </form>
           )}
           <p className="mt-6 text-center text-sm text-zinc-400">
-            <a href="/sign-in" className="font-medium text-[#ff6b35] hover:underline">
+            <Link
+              href="/sign-in"
+              className="inline-block py-2 font-medium text-[#ff6b35] hover:underline cursor-pointer focus:outline-none focus:underline"
+            >
               Back to sign in
-            </a>
+            </Link>
           </p>
         </div>
       </main>
