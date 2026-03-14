@@ -1,6 +1,9 @@
--- Profiles: extended user data (username, avatar)
+-- Profiles: extended user data (linked to auth.users via id)
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
+  first_name text,
+  last_name text,
+  email text,
   username text,
   avatar_url text,
   updated_at timestamptz default now() not null
@@ -21,12 +24,21 @@ create policy "Users can insert own profile"
   on public.profiles for insert
   with check (auth.uid() = id);
 
--- Trigger: create profile on signup
+-- Trigger: create profile on signup (auth_id = profiles.id)
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, username)
-  values (new.id, coalesce(new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)));
+  insert into public.profiles (id, first_name, last_name, email, username)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'first_name', ''),
+    coalesce(new.raw_user_meta_data->>'last_name', ''),
+    new.email,
+    coalesce(
+      trim((new.raw_user_meta_data->>'first_name') || ' ' || (new.raw_user_meta_data->>'last_name')),
+      split_part(new.email, '@', 1)
+    )
+  );
   return new;
 end;
 $$ language plpgsql security definer;

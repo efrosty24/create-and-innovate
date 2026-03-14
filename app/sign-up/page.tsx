@@ -7,7 +7,8 @@ import Header from "@/app/components/Header";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function SignUpPage() {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,9 +18,11 @@ export default function SignUpPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const ok = await signUp(email, password, name);
-    if (ok) router.push("/account");
-    else setError("An account with this email already exists.");
+    const ok = await signUp(email, password, { first_name: firstName, last_name: lastName });
+    if (ok) {
+      const next = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null;
+      router.push(next && next.startsWith("/") ? next : "/dashboard");
+    } else setError("An account with this email already exists.");
   }
 
   return (
@@ -33,17 +36,33 @@ export default function SignUpPage() {
           </p>
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-zinc-300">
-                Name
+              <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300">
+                First name
               </label>
               <input
-                id="name"
+                id="firstName"
                 type="text"
-                autoComplete="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                autoComplete="given-name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
                 className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
-                placeholder="Your name"
+                placeholder="First name"
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-zinc-300">
+                Last name
+              </label>
+              <input
+                id="lastName"
+                type="text"
+                autoComplete="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                placeholder="Last name"
               />
             </div>
             <div>

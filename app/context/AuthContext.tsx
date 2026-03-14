@@ -14,6 +14,8 @@ export type User = {
   id: string;
   email: string;
   name: string;
+  first_name: string | null;
+  last_name: string | null;
   username: string | null;
   avatar_url: string | null;
 };
@@ -30,11 +32,21 @@ type AuthContextType = {
   linkedDevices: LinkedDevice[];
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<boolean>;
-  signUp: (email: string, password: string, name: string) => Promise<boolean>;
+  signUp: (
+    email: string,
+    password: string,
+    meta: { first_name: string; last_name: string }
+  ) => Promise<boolean>;
   signOut: () => void;
   linkDevice: (shortId: string) => Promise<boolean>;
   unlinkDevice: (id: string) => Promise<void>;
-  updateProfile: (updates: { username?: string; avatar_url?: string }) => Promise<boolean>;
+  updateProfile: (updates: {
+    username?: string;
+    avatar_url?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+  }) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
   refreshProfile: () => Promise<void>;
 };
@@ -50,8 +62,20 @@ function loadUserFallback(): User | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as { id: string; email: string; name: string };
-    return { ...parsed, username: null, avatar_url: null };
+    const parsed = JSON.parse(raw) as {
+      id: string;
+      email: string;
+      name: string;
+      first_name?: string;
+      last_name?: string;
+    };
+    return {
+      ...parsed,
+      first_name: parsed.first_name ?? null,
+      last_name: parsed.last_name ?? null,
+      username: null,
+      avatar_url: null,
+    };
   } catch {
     return null;
   }
@@ -83,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!supabase) return null;
       const { data } = await supabase
         .from("profiles")
-        .select("username, avatar_url")
+        .select("first_name, last_name, email, username, avatar_url")
         .eq("id", uid)
         .single();
       return data;
@@ -123,6 +147,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       prev && prev.id === u.id
         ? {
             ...prev,
+            first_name: profile?.first_name ?? null,
+            last_name: profile?.last_name ?? null,
+            email: profile?.email ?? prev.email,
             username: profile?.username ?? null,
             avatar_url: profile?.avatar_url ?? null,
           }
@@ -144,10 +171,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } = await supabase.auth.getSession();
       if (session?.user) {
         const profile = await fetchProfile(session.user.id);
+        const firstName = profile?.first_name ?? session.user.user_metadata?.first_name ?? "";
+        const lastName = profile?.last_name ?? session.user.user_metadata?.last_name ?? "";
+        const name = [firstName, lastName].filter(Boolean).join(" ") || (session.user.email ?? "");
         setUser({
           id: session.user.id,
-          email: session.user.email ?? "",
-          name: (session.user.user_metadata?.name as string) ?? session.user.email ?? "",
+          email: profile?.email ?? session.user.email ?? "",
+          name,
+          first_name: profile?.first_name ?? null,
+          last_name: profile?.last_name ?? null,
           username: profile?.username ?? null,
           avatar_url: profile?.avatar_url ?? null,
         });
@@ -183,10 +215,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       if (session?.user) {
         const profile = await fetchProfile(session.user.id);
+        const firstName = profile?.first_name ?? session.user.user_metadata?.first_name ?? "";
+        const lastName = profile?.last_name ?? session.user.user_metadata?.last_name ?? "";
+        const name = [firstName, lastName].filter(Boolean).join(" ") || (session.user.email ?? "");
         setUser({
           id: session.user.id,
-          email: session.user.email ?? "",
-          name: (session.user.user_metadata?.name as string) ?? session.user.email ?? "",
+          email: profile?.email ?? session.user.email ?? "",
+          name,
+          first_name: profile?.first_name ?? null,
+          last_name: profile?.last_name ?? null,
           username: profile?.username ?? null,
           avatar_url: profile?.avatar_url ?? null,
         });
@@ -216,6 +253,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           id: found.id,
           email: found.email,
           name: found.name,
+          first_name: null,
+          last_name: null,
           username: null,
           avatar_url: null,
         };
@@ -231,17 +270,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signUp = useCallback(
-    async (email: string, password: string, name: string) => {
+    async (
+      email: string,
+      password: string,
+      meta: { first_name: string; last_name: string }
+    ) => {
       if (supabase) {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { name } },
+          options: {
+            data: {
+              first_name: meta.first_name,
+              last_name: meta.last_name,
+            },
+          },
         });
         return !error;
       }
       try {
         const raw = localStorage.getItem(USERS_KEY);
+        const name = [meta.first_name, meta.last_name].filter(Boolean).join(" ") || email;
         const users: Array<{ email: string; password: string; id: string; name: string }> = raw
           ? JSON.parse(raw)
           : [];
@@ -249,7 +298,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const id = crypto.randomUUID();
         users.push({ id, email, password, name });
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        const userData: User = { id, email, name, username: null, avatar_url: null };
+        const userData: User = {
+          id,
+          email,
+          name,
+          first_name: meta.first_name || null,
+          last_name: meta.last_name || null,
+          username: null,
+          avatar_url: null,
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
         setUser(userData);
         setLinkedDevices([]);
@@ -326,7 +383,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const updateProfile = useCallback(
-    async (updates: { username?: string; avatar_url?: string }) => {
+    async (updates: {
+      username?: string;
+      avatar_url?: string;
+      first_name?: string;
+      last_name?: string;
+      email?: string;
+    }) => {
       if (!supabase) return false;
       const {
         data: { user: u },

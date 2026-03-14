@@ -13,10 +13,13 @@ export default function AccountPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user) router.push("/sign-in");
+    if (!isLoading && !user) {
+      const next = "/account";
+      router.push(`/sign-in?next=${encodeURIComponent(next)}`);
+    }
   }, [user, isLoading, router]);
 
-  function handleLinkDevice(e: React.FormEvent) {
+  async function handleLinkDevice(e: React.FormEvent) {
     e.preventDefault();
     setLinkError("");
     const trimmed = shortId.replace(/\D/g, "").slice(-4);
@@ -24,8 +27,9 @@ export default function AccountPage() {
       setLinkError("Enter the 4-digit Short-ID from your Prism device.");
       return;
     }
-    linkDevice(trimmed);
-    setShortId("");
+    const ok = await linkDevice(trimmed);
+    if (ok) setShortId("");
+    else setLinkError("Could not link device. It may already be linked.");
   }
 
   if (isLoading || !user) {
@@ -54,8 +58,12 @@ export default function AccountPage() {
             <h2 className="text-lg font-medium text-white">Profile</h2>
             <dl className="mt-4 space-y-3">
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Name</dt>
-                <dd className="mt-1 text-white">{user.name || "—"}</dd>
+                <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">First name</dt>
+                <dd className="mt-1 text-white">{user.first_name ?? "—"}</dd>
+              </div>
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Last name</dt>
+                <dd className="mt-1 text-white">{user.last_name ?? "—"}</dd>
               </div>
               <div>
                 <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Email</dt>
