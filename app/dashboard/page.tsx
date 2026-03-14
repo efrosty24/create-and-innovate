@@ -29,8 +29,8 @@ export default function DashboardProductsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h1 className="text-2xl font-semibold text-white">Your Products</h1>
+    <div className="mx-auto max-w-3xl min-w-0">
+      <h1 className="text-xl font-semibold text-white sm:text-2xl">Your Products</h1>
       <p className="mt-2 text-zinc-400">
         Prism devices linked to your account. Register a new device with its 4-digit Short-ID.
       </p>

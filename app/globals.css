@@ -21,7 +21,10 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Mobile: comfortable tap targets for primary actions (use min-h-11 or py-3) */
 
 body {
   background: var(--background);

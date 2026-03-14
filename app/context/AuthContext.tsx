@@ -47,6 +47,7 @@ type AuthContextType = {
     last_name?: string;
     email?: string;
   }) => Promise<boolean>;
+  deleteAvatar: () => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
   resetPasswordForEmail: (email: string, redirectTo?: string) => Promise<{ ok: boolean; message?: string }>;
   refreshProfile: () => Promise<void>;
@@ -410,15 +411,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data: { user: u },
       } = await supabase.auth.getUser();
       if (!u) return false;
-      const { error } = await supabase
-        .from("profiles")
-        .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq("id", u.id);
+      const { error } = await supabase.from("profiles").update(updates).eq("id", u.id);
       if (!error) await refreshProfile();
       return !error;
     },
     [supabase, refreshProfile]
   );
+
+  const deleteAvatar = useCallback(async () => {
+    if (!supabase) return false;
+    const {
+      data: { user: u },
+    } = await supabase.auth.getUser();
+    if (!u) return false;
+    const { data: files } = await supabase.storage.from("avatars").list(u.id);
+    if (files?.length) {
+      const paths = files.map((f) => `${u.id}/${f.name}`);
+      await supabase.storage.from("avatars").remove(paths);
+    }
+    const { error } = await supabase.from("profiles").update({ avatar_url: null }).eq("id", u.id);
+    if (!error) await refreshProfile();
+    return !error;
+  }, [supabase, refreshProfile]);
 
   const updatePassword = useCallback(
     async (newPassword: string) => {
@@ -457,6 +471,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         linkDevice,
         unlinkDevice,
         updateProfile,
+        deleteAvatar,
         updatePassword,
         resetPasswordForEmail,
         refreshProfile,

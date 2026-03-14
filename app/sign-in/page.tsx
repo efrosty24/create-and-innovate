@@ -29,7 +29,7 @@ export default function SignInPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#0c0c0c] pt-14 flex flex-col items-center justify-center px-6">
+      <main className="min-h-screen bg-[#0c0c0c] pt-16 sm:pt-14 flex flex-col items-center justify-center px-4 sm:px-6 py-8">
         <div className="w-full max-w-sm">
           <h1 className="text-2xl font-semibold text-white">Sign in</h1>
           <p className="mt-2 text-sm text-zinc-400">
@@ -72,7 +72,7 @@ export default function SignInPage() {
             )}
             <button
               type="submit"
-              className="w-full rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
+              className="w-full min-h-[48px] rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
             >
               Sign in
             </button>

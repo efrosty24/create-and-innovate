@@ -7,7 +7,7 @@ import { PasswordInput } from "@/app/components/PasswordInput";
 import { createClient } from "@/lib/supabase/client";
 
 export default function PreferencesPage() {
-  const { user, updateProfile, updatePassword } = useAuth();
+  const { user, updateProfile, deleteAvatar, updatePassword } = useAuth();
   const [firstName, setFirstName] = useState(user?.first_name ?? "");
   const [lastName, setLastName] = useState(user?.last_name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
@@ -120,37 +120,56 @@ export default function PreferencesPage() {
         <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <h2 className="text-lg font-medium text-white">Profile</h2>
 
-          <div className="mt-6 flex items-center gap-6">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] hover:bg-white/10 transition-colors"
-            >
-              {avatarPreview ? (
-                <span className="relative block h-full w-full">
-                  <Image
-                    src={avatarPreview}
-                    alt="Profile"
-                    fill
-                    className="object-cover"
-                    unoptimized={avatarPreview.startsWith("blob:")}
-                    sizes="96px"
-                  />
-                </span>
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-3xl text-zinc-500">
-                  👤
-                </span>
-              )}
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-            />
-            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:flex-wrap">
+          <div className="mt-6 flex flex-wrap items-start gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] hover:bg-white/10 transition-colors"
+              >
+                {avatarPreview ? (
+                  <span className="relative block h-full w-full">
+                    <Image
+                      src={avatarPreview}
+                      alt="Profile"
+                      fill
+                      className="object-cover"
+                      unoptimized={avatarPreview.startsWith("blob:")}
+                      sizes="96px"
+                    />
+                  </span>
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-3xl text-zinc-500">
+                    👤
+                  </span>
+                )}
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+              <button
+                type="button"
+                onClick={async () => {
+                  setMessage(null);
+                  const ok = await deleteAvatar();
+                  if (ok) {
+                    setAvatarPreview(null);
+                    setAvatarFile(null);
+                    setMessage({ type: "success", text: "Photo removed." });
+                  } else {
+                    setMessage({ type: "error", text: "Could not remove photo." });
+                  }
+                }}
+                className="text-xs text-zinc-400 hover:text-white hover:bg-white/5 rounded px-2 py-1 transition-colors"
+              >
+                Remove photo
+              </button>
+            </div>
+            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:flex-wrap min-w-0">
               <div className="min-w-0 flex-1">
                 <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300">
                   First name

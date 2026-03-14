@@ -46,7 +46,7 @@ export default function AccountPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#0c0c0c] pt-14 pb-24 px-6">
+      <main className="min-h-screen bg-[#0c0c0c] pt-16 sm:pt-14 pb-24 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-2xl font-semibold text-white">Account</h1>
           <p className="mt-2 text-sm text-zinc-400">
