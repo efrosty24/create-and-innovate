@@ -48,6 +48,7 @@ type AuthContextType = {
     email?: string;
   }) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
+  resetPasswordForEmail: (email: string, redirectTo?: string) => Promise<{ ok: boolean; message?: string }>;
   refreshProfile: () => Promise<void>;
 };
 
@@ -414,6 +415,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [supabase]
   );
 
+  const resetPasswordForEmail = useCallback(
+    async (email: string, redirectTo?: string): Promise<{ ok: boolean; message?: string }> => {
+      if (!supabase) return { ok: false, message: "Auth is not configured." };
+      const url = redirectTo ?? (typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: url,
+      });
+      if (error) return { ok: false, message: error.message };
+      return { ok: true };
+    },
+    [supabase]
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -427,6 +441,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         unlinkDevice,
         updateProfile,
         updatePassword,
+        resetPasswordForEmail,
         refreshProfile,
       }}
     >

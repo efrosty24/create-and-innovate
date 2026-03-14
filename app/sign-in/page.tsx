@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
+import { PasswordInput } from "@/app/components/PasswordInput";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function SignInPage() {
@@ -48,20 +49,19 @@ export default function SignInPage() {
                 placeholder="you@example.com"
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-300">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              label="Password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <p className="text-right">
+              <Link href="/forgot-password" className="text-sm text-[#ff6b35] hover:underline">
+                Forgot password?
+              </Link>
+            </p>
             {error && (
               <p className="text-sm text-red-400">{error}</p>
             )}

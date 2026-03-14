@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { useAuth } from "@/app/context/AuthContext";
+import { PasswordInput } from "@/app/components/PasswordInput";
 import { createClient } from "@/lib/supabase/client";
 
 export default function PreferencesPage() {
@@ -221,33 +222,23 @@ export default function PreferencesPage() {
         <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <h2 className="text-lg font-medium text-white">Change password</h2>
           <div className="mt-4 space-y-4">
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-300">
-                New password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                minLength={6}
-                className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
-                placeholder="At least 6 characters"
-              />
-            </div>
-            <div>
-              <label htmlFor="passwordConfirm" className="block text-sm font-medium text-zinc-300">
-                Confirm new password
-              </label>
-              <input
-                id="passwordConfirm"
-                type="password"
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
-                placeholder="Repeat password"
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              label="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
+              placeholder="At least 6 characters"
+              className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+            />
+            <PasswordInput
+              id="passwordConfirm"
+              label="Confirm new password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              placeholder="Repeat password"
+              className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+            />
           </div>
           <button
             type="submit"
