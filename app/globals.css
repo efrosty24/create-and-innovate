@@ -39,3 +39,58 @@ button {
 button:disabled {
   cursor: not-allowed;
 }
+
+/* Skeleton: shimmer sweep + soft pulse for flash in/out */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    background-position: -200% 0;
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 75%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  background-color: rgba(255, 255, 255, 0.06);
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.skeleton-pulse {
+  background-color: rgba(255, 255, 255, 0.08);
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

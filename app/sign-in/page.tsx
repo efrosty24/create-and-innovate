@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FiLoader } from "react-icons/fi";
 import Header from "@/app/components/Header";
 import { PasswordInput } from "@/app/components/PasswordInput";
 import { useAuth } from "@/app/context/AuthContext";
@@ -11,13 +12,16 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { signIn } = useAuth();
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
     const result = await signIn(email, password);
+    setSubmitting(false);
     if (result.ok) {
       const next = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null;
       router.push(next && next.startsWith("/") ? next : "/dashboard");
@@ -72,9 +76,17 @@ export default function SignInPage() {
             )}
             <button
               type="submit"
-              className="w-full min-h-[48px] rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
+              disabled={submitting}
+              className="w-full min-h-[48px] rounded-full bg-[#ff6b35] py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-70 disabled:hover:scale-100 transition-all inline-flex items-center justify-center gap-2"
             >
-              Sign in
+              {submitting ? (
+                <>
+                  <FiLoader className="h-4 w-4 animate-spin shrink-0" aria-hidden />
+                  Signing in…
+                </>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
           <p className="mt-6 text-center text-sm text-zinc-400">

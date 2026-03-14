@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { FiX } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
 import { useLocationFeedback } from "./useSafeData";
 import { feedbackAuthorName } from "@/types/safe";
+import { SkeletonListItem, Skeleton } from "@/app/components/Skeleton";
 import type { SafeLocation } from "@/types/safe";
 import type { SafeArea } from "@/types/safe";
 
@@ -40,15 +42,22 @@ export default function LocationFeedbackPanel({ safeLocation, safeArea, onClose 
         <button
           type="button"
           onClick={onClose}
-          className="text-zinc-400 hover:text-white transition-colors"
+          className="text-zinc-400 hover:text-white transition-colors p-1"
           aria-label="Close"
         >
-          ✕
+          <FiX className="h-5 w-5" />
         </button>
       </div>
 
       {loading ? (
-        <p className="mt-4 text-sm text-zinc-500">Loading comments…</p>
+        <div className="mt-4 space-y-3 max-h-60 overflow-hidden">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="rounded-lg border border-white/5 bg-black/20 p-3 space-y-2">
+              <Skeleton className="h-4 w-full rounded" />
+              <Skeleton className="h-3 w-24 rounded" />
+            </div>
+          ))}
+        </div>
       ) : feedback.length === 0 ? (
         <p className="mt-4 text-sm text-zinc-500">No comments yet. Be the first to share feedback.</p>
       ) : (

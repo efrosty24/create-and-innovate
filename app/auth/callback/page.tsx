@@ -2,7 +2,9 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FiLoader } from "react-icons/fi";
 import { createClient } from "@/lib/supabase/client";
+import { Skeleton } from "@/app/components/Skeleton";
 
 function AuthCallbackInner() {
   const router = useRouter();
@@ -60,9 +62,19 @@ function AuthCallbackInner() {
 
   return (
     <main className="min-h-screen bg-[#0c0c0c] flex flex-col items-center justify-center px-6">
-      <div className="text-center text-zinc-400">
-        {status === "loading" && <p>Confirming your link…</p>}
-        {status === "done" && <p>Redirecting…</p>}
+      <div className="text-center text-zinc-400 flex flex-col items-center gap-4">
+        {status === "loading" && (
+          <>
+            <FiLoader className="h-10 w-10 animate-spin text-white/60" aria-hidden />
+            <p>Confirming your link…</p>
+          </>
+        )}
+        {status === "done" && (
+          <>
+            <FiLoader className="h-10 w-10 animate-spin text-white/60" aria-hidden />
+            <p>Redirecting…</p>
+          </>
+        )}
         {status === "error" && (
           <p>Something went wrong. Redirecting you to reset password…</p>
         )}
@@ -79,8 +91,9 @@ export default function AuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <main className="min-h-screen bg-[#0c0c0c] flex flex-col items-center justify-center px-6">
-          <p className="text-zinc-400">Loading…</p>
+        <main className="min-h-screen bg-[#0c0c0c] flex flex-col items-center justify-center px-6 gap-4">
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-4 w-40 rounded" />
         </main>
       }
     >

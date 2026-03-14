@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
+import {
+  Skeleton,
+  SkeletonButton,
+  SkeletonListItem,
+} from "@/app/components/Skeleton";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function AccountPage() {
@@ -36,8 +41,36 @@ export default function AccountPage() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-[#0c0c0c] pt-14 flex items-center justify-center">
-          <p className="text-zinc-400">Loading…</p>
+        <main className="min-h-screen bg-[#0c0c0c] pt-16 sm:pt-14 pb-24 px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl space-y-8">
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-40 rounded" />
+              <Skeleton className="h-4 w-64 rounded" />
+            </div>
+            <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
+              <Skeleton className="h-5 w-20 rounded mb-4" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="space-y-1">
+                    <Skeleton className="h-3 w-24 rounded" />
+                    <Skeleton className="h-4 w-full rounded" />
+                  </div>
+                ))}
+              </div>
+            </section>
+            <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
+              <Skeleton className="h-5 w-48 rounded mb-2" />
+              <Skeleton className="h-4 w-full max-w-sm rounded mb-6" />
+              <div className="flex flex-wrap gap-3">
+                <Skeleton className="h-12 w-20 rounded-lg" />
+                <SkeletonButton className="min-w-[120px]" />
+              </div>
+              <div className="mt-6 space-y-3">
+                <SkeletonListItem />
+                <SkeletonListItem />
+              </div>
+            </section>
+          </div>
         </main>
       </>
     );

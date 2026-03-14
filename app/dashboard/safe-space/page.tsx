@@ -5,6 +5,7 @@ import SafeSpaceMap from "./SafeSpaceMap";
 import LocationFeedbackPanel from "./LocationFeedbackPanel";
 import { useSafeLocationsAndAreas } from "./useSafeData";
 import { DEMO_SAFE_PLACES } from "./data";
+import { SkeletonRect, SkeletonListItem } from "@/app/components/Skeleton";
 import type { SafeLocation } from "@/types/safe";
 import type { SafeArea } from "@/types/safe";
 
@@ -29,9 +30,7 @@ export default function SafeSpacePage() {
 
       <div className="mt-6 sm:mt-8">
         {loading ? (
-          <div className="h-[280px] sm:h-[360px] md:h-[400px] rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-zinc-500">
-            Loading map…
-          </div>
+          <SkeletonRect className="h-[280px] w-full sm:h-[360px] md:h-[400px] rounded-xl sm:rounded-2xl border border-white/10" />
         ) : (
           <SafeSpaceMap places={places} />
         )}
@@ -54,7 +53,13 @@ export default function SafeSpacePage() {
         <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Establishments</h2>
           <p className="mt-1 text-sm text-zinc-500">Queer-friendly venues. Click to view or add feedback.</p>
-          {locations.length === 0 ? (
+          {loading ? (
+            <div className="mt-4 space-y-2">
+              {[1, 2, 3, 4].map((i) => (
+                <SkeletonListItem key={i} className="!p-4" />
+              ))}
+            </div>
+          ) : locations.length === 0 ? (
             <p className="mt-4 text-sm text-zinc-500">No establishments in the database yet. Add them at the DBMS level.</p>
           ) : (
             <ul className="mt-4 space-y-2">
@@ -80,7 +85,13 @@ export default function SafeSpacePage() {
         <section className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
           <h2 className="text-lg font-medium text-white">Safe areas</h2>
           <p className="mt-1 text-sm text-zinc-500">Cities, towns, streets. Click to view or add feedback.</p>
-          {areas.length === 0 ? (
+          {loading ? (
+            <div className="mt-4 space-y-2">
+              {[1, 2, 3, 4].map((i) => (
+                <SkeletonListItem key={i} className="!p-4" />
+              ))}
+            </div>
+          ) : areas.length === 0 ? (
             <p className="mt-4 text-sm text-zinc-500">No safe areas in the database yet. Add them at the DBMS level.</p>
           ) : (
             <ul className="mt-4 space-y-2">

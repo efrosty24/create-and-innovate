@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FiLoader, FiRadio } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function DashboardProductsPage() {
@@ -51,9 +52,16 @@ export default function DashboardProductsPage() {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all"
+            className="rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all inline-flex items-center justify-center gap-2"
           >
-            {loading ? "Registering…" : "Register device"}
+            {loading ? (
+              <>
+                <FiLoader className="h-4 w-4 animate-spin shrink-0" aria-hidden />
+                Registering…
+              </>
+            ) : (
+              "Register device"
+            )}
           </button>
         </form>
         {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
@@ -74,8 +82,8 @@ export default function DashboardProductsPage() {
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-5 py-4"
               >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#ff6b35]/20 text-2xl">
-                    📻
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#ff6b35]/20">
+                    <FiRadio className="h-6 w-6 text-[#ff6b35]" aria-hidden />
                   </div>
                   <div>
                     <p className="font-medium text-white">

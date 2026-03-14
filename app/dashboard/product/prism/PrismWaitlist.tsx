@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FiLoader } from "react-icons/fi";
 
 export default function PrismWaitlist() {
   const [email, setEmail] = useState("");
@@ -39,9 +40,16 @@ export default function PrismWaitlist() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="min-h-[48px] shrink-0 rounded-full bg-[#ff6b35] px-6 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all"
+          className="min-h-[48px] shrink-0 rounded-full bg-[#ff6b35] px-6 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all inline-flex items-center justify-center gap-2"
         >
-          {status === "loading" ? "Joining…" : "Sign up for waitlist"}
+          {status === "loading" ? (
+            <>
+              <FiLoader className="h-4 w-4 animate-spin shrink-0" aria-hidden />
+              Joining…
+            </>
+          ) : (
+            "Sign up for waitlist"
+          )}
         </button>
       </div>
       {message && (

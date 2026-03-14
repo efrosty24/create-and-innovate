@@ -1,3 +1,5 @@
+import { FiWifi, FiCircle, FiZap } from "react-icons/fi";
+
 export default function PrismProductContent() {
   return (
     <div className="space-y-12 sm:space-y-16">
@@ -11,7 +13,7 @@ export default function PrismProductContent() {
         </p>
         <div className="mt-6 grid gap-4 sm:mt-8 sm:grid-cols-3 sm:gap-6">
           <div className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
-            <span className="text-2xl">📡</span>
+            <FiWifi className="h-8 w-8 text-[#ff6b35]" aria-hidden />
             <h3 className="mt-3 text-lg font-semibold text-white sm:text-xl">
               Node-to-Node Messaging
             </h3>
@@ -20,7 +22,7 @@ export default function PrismProductContent() {
             </p>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
-            <span className="text-2xl">🔘</span>
+            <FiCircle className="h-8 w-8 text-[#ff6b35]" aria-hidden />
             <h3 className="mt-3 text-lg font-semibold text-white sm:text-xl">
               Discreet Alerting
             </h3>
@@ -29,7 +31,7 @@ export default function PrismProductContent() {
             </p>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/5 p-4 sm:rounded-2xl sm:p-6">
-            <span className="text-2xl">💡</span>
+            <FiZap className="h-8 w-8 text-[#ff6b35]" aria-hidden />
             <h3 className="mt-3 text-lg font-semibold text-white sm:text-xl">
               Safe Proximity Beacon
             </h3>

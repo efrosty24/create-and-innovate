@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { FiMenu, FiX } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
+import { Skeleton } from "@/app/components/Skeleton";
 
 export default function Header() {
   const { user, isLoading, signOut } = useAuth();
@@ -16,6 +18,12 @@ export default function Header() {
 
       {/* Desktop nav */}
       <nav className="hidden sm:flex items-center gap-4 md:gap-6">
+        {isLoading && (
+          <>
+            <Skeleton className="h-5 w-32 rounded" />
+            <Skeleton className="h-9 w-20 rounded-lg" />
+          </>
+        )}
         {!isLoading &&
           (user ? (
             <>
@@ -56,6 +64,9 @@ export default function Header() {
 
       {/* Mobile: when logged in = welcome + logout; when logged out = menu + Sign up */}
       <div className="flex sm:hidden items-center gap-2">
+        {isLoading && (
+          <Skeleton className="h-8 w-24 rounded-full" />
+        )}
         {!isLoading && user && (
           <>
             <span className="text-sm text-zinc-400 truncate max-w-[100px]">
@@ -85,7 +96,7 @@ export default function Header() {
               aria-label="Menu"
               aria-expanded={menuOpen}
             >
-              {menuOpen ? "✕" : "☰"}
+              {menuOpen ? <FiX className="h-5 w-5" /> : <FiMenu className="h-5 w-5" />}
             </button>
           </>
         )}

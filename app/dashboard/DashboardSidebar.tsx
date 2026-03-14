@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { FiPackage, FiMapPin, FiSettings, FiRadio } from "react-icons/fi";
 
 const nav = [
-  { href: "/dashboard", label: "Your Products", icon: "📦" },
-  { href: "/dashboard/safe-space", label: "Safe Space", icon: "🏳️‍🌈" },
-  { href: "/dashboard/preferences", label: "Preferences", icon: "⚙️" },
+  { href: "/dashboard", label: "Your Products", Icon: FiPackage },
+  { href: "/dashboard/safe-space", label: "Safe Space", Icon: FiMapPin },
+  { href: "/dashboard/preferences", label: "Preferences", Icon: FiSettings },
 ] as const;
 
 type Props = {
@@ -49,7 +50,7 @@ export default function DashboardSidebar({ open, onClose, currentPath }: Props) 
                     : "text-zinc-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <span className="text-lg">{item.icon}</span>
+                <item.Icon className="h-5 w-5 shrink-0" aria-hidden />
                 {item.label}
               </Link>
             );
@@ -60,8 +61,8 @@ export default function DashboardSidebar({ open, onClose, currentPath }: Props) 
           </span>
           <div className="mt-1 rounded-xl border border-white/10 bg-white/5 p-3">
             <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#ff6b35]/20 text-lg">
-                📻
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#ff6b35]/20">
+                <FiRadio className="h-5 w-5 text-[#ff6b35]" aria-hidden />
               </div>
               <div className="min-w-0">
                 <p className="font-medium text-white">Prism</p>

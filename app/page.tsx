@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FiWifi, FiCircle, FiZap } from "react-icons/fi";
 import Header from "@/app/components/Header";
 
 const PRODUCT_IMAGE =
@@ -49,7 +50,7 @@ export default function Home() {
             </p>
             <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 sm:grid-cols-3">
               <div className="rounded-xl border border-white/10 bg-white/5 p-5 text-left sm:rounded-2xl sm:p-8">
-                <span className="text-2xl">📡</span>
+                <FiWifi className="h-8 w-8 text-[#ff6b35]" aria-hidden />
                 <h3 className="mt-4 text-lg font-semibold sm:text-xl">
                   Node-to-Node Messaging
                 </h3>
@@ -59,7 +60,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-5 text-left sm:rounded-2xl sm:p-8">
-                <span className="text-2xl">🔘</span>
+                <FiCircle className="h-8 w-8 text-[#ff6b35]" aria-hidden />
                 <h3 className="mt-4 text-lg font-semibold sm:text-xl">
                   Discreet Alerting
                 </h3>
@@ -69,7 +70,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-5 text-left sm:rounded-2xl sm:p-8">
-                <span className="text-2xl">💡</span>
+                <FiZap className="h-8 w-8 text-[#ff6b35]" aria-hidden />
                 <h3 className="mt-4 text-lg font-semibold sm:text-xl">
                   Safe Proximity Beacon
                 </h3>
