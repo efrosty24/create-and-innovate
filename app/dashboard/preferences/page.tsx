@@ -7,6 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function PreferencesPage() {
   const { user, updateProfile, updatePassword } = useAuth();
+  const [firstName, setFirstName] = useState(user?.first_name ?? "");
+  const [lastName, setLastName] = useState(user?.last_name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
   const [username, setUsername] = useState(user?.username ?? "");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -30,7 +33,16 @@ export default function PreferencesPage() {
   const handleSubmitProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    const updates: { username?: string; avatar_url?: string } = {};
+    const updates: {
+      first_name?: string;
+      last_name?: string;
+      email?: string;
+      username?: string;
+      avatar_url?: string;
+    } = {};
+    if (firstName.trim() !== (user?.first_name ?? "")) updates.first_name = firstName.trim() || undefined;
+    if (lastName.trim() !== (user?.last_name ?? "")) updates.last_name = lastName.trim() || undefined;
+    if (email.trim() !== (user?.email ?? "")) updates.email = email.trim() || undefined;
     if (username.trim() !== (user?.username ?? "")) updates.username = username.trim() || undefined;
 
     const supabase = createClient();
@@ -89,7 +101,7 @@ export default function PreferencesPage() {
     <div className="mx-auto max-w-2xl">
       <h1 className="text-2xl font-semibold text-white">Preferences</h1>
       <p className="mt-2 text-zinc-400">
-        Edit your profile picture, username, and password.
+        Edit your profile picture, name, email, username, and password.
       </p>
 
       {message && (
@@ -137,18 +149,62 @@ export default function PreferencesPage() {
               className="hidden"
               onChange={handleAvatarChange}
             />
-            <div className="flex-1">
-              <label htmlFor="username" className="block text-sm font-medium text-zinc-300">
-                Username
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
-                placeholder="Your display name"
-              />
+            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:flex-wrap">
+              <div className="min-w-0 flex-1">
+                <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300">
+                  First name
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  autoComplete="given-name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  placeholder="First name"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <label htmlFor="lastName" className="block text-sm font-medium text-zinc-300">
+                  Last name
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  placeholder="Last name"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <label htmlFor="prefs-email" className="block text-sm font-medium text-zinc-300">
+                  Email
+                </label>
+                <input
+                  id="prefs-email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <label htmlFor="username" className="block text-sm font-medium text-zinc-300">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-white placeholder-zinc-500 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35]"
+                  placeholder="Display name"
+                />
+              </div>
             </div>
           </div>
           <button

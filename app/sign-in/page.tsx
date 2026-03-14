@@ -17,8 +17,10 @@ export default function SignInPage() {
     e.preventDefault();
     setError("");
     const ok = await signIn(email, password);
-    if (ok) router.push("/account");
-    else setError("Invalid email or password.");
+    if (ok) {
+      const next = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null;
+      router.push(next && next.startsWith("/") ? next : "/dashboard");
+    } else setError("Invalid email or password.");
   }
 
   return (
