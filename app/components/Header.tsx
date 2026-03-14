@@ -48,13 +48,13 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => signOut()}
-                className="text-sm text-zinc-400 hover:text-white transition-colors"
+                className="rounded px-2 py-1 text-sm text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
               >
                 Sign Out
               </button>
               <Link
                 href="/account"
-                className="text-sm font-medium px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                className="text-sm font-medium px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 hover:scale-[1.02] active:scale-[0.99] transition-all"
               >
                 {user.username || user.name || user.email}
               </Link>
@@ -69,7 +69,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/sign-up"
-                className="text-sm font-medium px-4 py-2 rounded-full bg-[#ff6b35] text-white hover:bg-[#e85a2a] transition-colors"
+                className="text-sm font-medium px-4 py-2 rounded-full bg-[#ff6b35] text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
               >
                 Sign Up
               </Link>

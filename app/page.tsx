@@ -239,13 +239,13 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <a
                 href="/sign-up"
-                className="inline-flex items-center rounded-full bg-[#ff6b35] px-6 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] transition-colors"
+                className="inline-flex items-center rounded-full bg-[#ff6b35] px-6 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
               >
                 Sign Up
               </a>
               <a
                 href="/sign-in"
-                className="inline-flex items-center rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+                className="inline-flex items-center rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white hover:bg-white/10 hover:scale-[1.02] active:scale-[0.99] transition-all"
               >
                 Sign In
               </a>

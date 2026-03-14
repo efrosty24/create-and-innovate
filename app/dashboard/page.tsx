@@ -51,7 +51,7 @@ export default function DashboardProductsPage() {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] disabled:opacity-50 transition-colors"
+            className="rounded-full bg-[#ff6b35] px-5 py-3 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all"
           >
             {loading ? "Registering…" : "Register device"}
           </button>
@@ -89,7 +89,7 @@ export default function DashboardProductsPage() {
                 <button
                   type="button"
                   onClick={() => handleUnlink(device.id)}
-                  className="text-sm text-zinc-400 hover:text-red-400 transition-colors"
+                  className="rounded px-2 py-1 text-sm text-zinc-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
                 >
                   Unlink
                 </button>

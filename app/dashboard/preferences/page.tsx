@@ -124,7 +124,7 @@ export default function PreferencesPage() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] transition-colors"
+              className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-white/5 hover:border-[#ff6b35] hover:bg-white/10 transition-colors"
             >
               {avatarPreview ? (
                 <span className="relative block h-full w-full">
@@ -210,7 +210,7 @@ export default function PreferencesPage() {
           </div>
           <button
             type="submit"
-            className="mt-6 rounded-full bg-[#ff6b35] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#e85a2a] transition-colors"
+            className="mt-6 rounded-full bg-[#ff6b35] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#e85a2a] hover:scale-[1.02] active:scale-[0.99] transition-all"
           >
             Save profile
           </button>
@@ -242,7 +242,7 @@ export default function PreferencesPage() {
           </div>
           <button
             type="submit"
-            className="mt-6 rounded-full bg-white/10 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/20 transition-colors"
+            className="mt-6 rounded-full bg-white/10 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/20 hover:scale-[1.02] active:scale-[0.99] transition-all"
           >
             Update password
           </button>
