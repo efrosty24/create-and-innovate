@@ -34,7 +34,7 @@ export default function DashboardLayout({
           <button
             type="button"
             onClick={() => setSidebarOpen((o) => !o)}
-            className="fixed left-3 top-20 z-30 flex h-11 w-11 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-transform lg:hidden"
+            className="fixed left-3 top-20 z-[1001] flex h-11 w-11 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-transform lg:hidden"
             aria-label="Toggle sidebar"
           >
             {sidebarOpen ? "←" : "→"}
