@@ -1,9 +1,6 @@
-import Image from "next/image";
 import { FiWifi, FiCircle, FiZap } from "react-icons/fi";
 import Header from "@/app/components/Header";
-
-const PRODUCT_IMAGE =
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80";
+import HeroCarousel from "@/app/components/HeroCarousel";
 
 export default function Home() {
   return (
@@ -22,27 +19,7 @@ export default function Home() {
             Node-to-node messaging over LoRa. Discreet alerts. Safe proximity
             beacon. No names, no tracking—just your community.
           </p>
-          <div className="mt-10 w-full max-w-2xl sm:mt-16 space-y-6">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-900 sm:rounded-2xl">
-              <Image
-                src="/design.png"
-                alt="Prism microcontroller design"
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 672px"
-                priority
-              />
-            </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-900 sm:rounded-2xl">
-              <Image
-                src={PRODUCT_IMAGE}
-                alt="Prism device - wearable safety beacon"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 672px"
-              />
-            </div>
-          </div>
+          <HeroCarousel />
         </section>
 
         {/* Features - MVP Core Three */}
@@ -110,8 +87,12 @@ export default function Home() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-white/10 bg-white/5">
-                      <th className="px-3 py-3 font-medium sm:px-6 sm:py-4">Component</th>
-                      <th className="px-3 py-3 font-medium sm:px-6 sm:py-4">Choice</th>
+                      <th className="px-3 py-3 font-medium sm:px-6 sm:py-4">
+                        Component
+                      </th>
+                      <th className="px-3 py-3 font-medium sm:px-6 sm:py-4">
+                        Choice
+                      </th>
                       <th className="hidden px-6 py-4 font-medium sm:table-cell">
                         Why
                       </th>
@@ -120,42 +101,50 @@ export default function Home() {
                   <tbody className="divide-y divide-white/5">
                     <tr>
                       <td className="px-3 py-3 sm:px-6 sm:py-4">MCU / Radio</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">LilyGo T-Echo (nRF52840 + LoRa)</td>
-                    <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
-                      Low power; integrated LoRa and Bluetooth.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">Display</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">1.54&quot; E-Ink</td>
-                    <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
-                      Sunlight readable, stays on when power is low.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">Power</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">850mAh LiPo</td>
-                    <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
-                      ~4–7 days always-on beaconing.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">Enclosure</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">3D printed (TPU/PLA)</td>
-                    <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
-                      Compact, rugged, clip to bag.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">Input</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4">BMM150 Magnetometer</td>
-                    <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
-                      Tap or shake gestures to trigger alerts.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
+                        LilyGo T-Echo (nRF52840 + LoRa)
+                      </td>
+                      <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
+                        Low power; integrated LoRa and Bluetooth.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">Display</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
+                        1.54&quot; E-Ink
+                      </td>
+                      <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
+                        Sunlight readable, stays on when power is low.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">Power</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">850mAh LiPo</td>
+                      <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
+                        ~4–7 days always-on beaconing.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">Enclosure</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
+                        3D printed (TPU/PLA)
+                      </td>
+                      <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
+                        Compact, rugged, clip to bag.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">Input</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
+                        BMM150 Magnetometer
+                      </td>
+                      <td className="hidden px-6 py-4 text-zinc-400 sm:table-cell">
+                        Tap or shake gestures to trigger alerts.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
