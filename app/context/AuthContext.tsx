@@ -189,13 +189,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const init = async () => {
       try {
-        // Use getUser() so the session is validated/refreshed on every load (e.g. after refresh)
+        // Fast path: getSession() reads from storage and returns immediately (no network).
+        // Show UI right away if we have a session, then validate/refresh in background.
         const {
-          data: { user: authUser },
-        } = await supabase.auth.getUser();
+          data: { session },
+        } = await supabase.auth.getSession();
 
-        if (authUser) {
-          // Set minimal user immediately so the app renders and doesn't hang
+        if (session?.user) {
+          const authUser = session.user;
           const meta = authUser.user_metadata ?? {};
           const firstName = meta.first_name ?? "";
           const lastName = meta.last_name ?? "";
@@ -212,35 +213,86 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLinkedDevices([]);
           setIsLoading(false);
 
-          // Hydrate profile (avatar, username, etc.) and linked devices in parallel
-          const [profile] = await Promise.all([
+          // Validate session and hydrate in background (don't block first paint)
+          const validateAndHydrate = async () => {
+            const {
+              data: { user: freshUser },
+            } = await supabase.auth.getUser();
+            if (!freshUser || freshUser.id !== authUser.id) return;
+            const [profile] = await Promise.all([
+              fetchProfile(freshUser.id),
+              fetchLinkedDevicesForUser(freshUser.id),
+            ]);
+            const fn = profile?.first_name ?? freshUser.user_metadata?.first_name ?? "";
+            const ln = profile?.last_name ?? freshUser.user_metadata?.last_name ?? "";
+            const fullName = [fn, ln].filter(Boolean).join(" ") || (freshUser.email ?? "");
+            setUser((prev) =>
+              prev && prev.id === freshUser.id
+                ? {
+                    ...prev,
+                    email: profile?.email ?? prev.email,
+                    name: fullName,
+                    first_name: profile?.first_name ?? null,
+                    last_name: profile?.last_name ?? null,
+                    username: profile?.username ?? null,
+                    avatar_url: profile?.avatar_url ?? null,
+                  }
+                : prev
+            );
+          };
+          validateAndHydrate();
+          return;
+        }
+
+        // No session in storage: one network call to check refresh token (e.g. after restart)
+        const {
+          data: { user: authUser },
+        } = await supabase.auth.getUser();
+
+        if (authUser) {
+          const meta = authUser.user_metadata ?? {};
+          const firstName = meta.first_name ?? "";
+          const lastName = meta.last_name ?? "";
+          const name = [firstName, lastName].filter(Boolean).join(" ") || (authUser.email ?? "");
+          setUser({
+            id: authUser.id,
+            email: authUser.email ?? "",
+            name,
+            first_name: meta.first_name ?? null,
+            last_name: meta.last_name ?? null,
+            username: null,
+            avatar_url: null,
+          });
+          setLinkedDevices([]);
+          setIsLoading(false);
+          Promise.all([
             fetchProfile(authUser.id),
             fetchLinkedDevicesForUser(authUser.id),
-          ]);
-
-          const fn = profile?.first_name ?? meta.first_name ?? "";
-          const ln = profile?.last_name ?? meta.last_name ?? "";
-          const fullName = [fn, ln].filter(Boolean).join(" ") || (authUser.email ?? "");
-          setUser((prev) =>
-            prev && prev.id === authUser.id
-              ? {
-                  ...prev,
-                  email: profile?.email ?? prev.email,
-                  name: fullName,
-                  first_name: profile?.first_name ?? null,
-                  last_name: profile?.last_name ?? null,
-                  username: profile?.username ?? null,
-                  avatar_url: profile?.avatar_url ?? null,
-                }
-              : prev
-          );
+          ]).then(([profile]) => {
+            const fn = profile?.first_name ?? meta.first_name ?? "";
+            const ln = profile?.last_name ?? meta.last_name ?? "";
+            const fullName = [fn, ln].filter(Boolean).join(" ") || (authUser.email ?? "");
+            setUser((prev) =>
+              prev && prev.id === authUser.id
+                ? {
+                    ...prev,
+                    email: profile?.email ?? prev.email,
+                    name: fullName,
+                    first_name: profile?.first_name ?? null,
+                    last_name: profile?.last_name ?? null,
+                    username: profile?.username ?? null,
+                    avatar_url: profile?.avatar_url ?? null,
+                  }
+                : prev
+            );
+          });
         } else {
           setUser(null);
           setLinkedDevices([]);
-          setIsLoading(false);
         }
       } catch {
-        // If getUser() failed, user is still null; if hydration failed, minimal user is already set
+        setUser(null);
+        setLinkedDevices([]);
       } finally {
         setIsLoading(false);
       }

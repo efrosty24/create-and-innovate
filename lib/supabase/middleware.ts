@@ -7,7 +7,19 @@ function isProtectedPath(pathname: string) {
   return PROTECTED_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 }
 
+/** Only run Supabase auth for routes that need redirect or protection; skip for sign-in, sign-up, assets, etc. */
+function needsAuthCheck(pathname: string) {
+  if (pathname === "/") return true;
+  if (isProtectedPath(pathname)) return true;
+  return false;
+}
+
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  if (!needsAuthCheck(pathname)) {
+    return NextResponse.next();
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
